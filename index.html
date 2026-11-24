@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Sponge and cable shape control with a JEPA world action model.">
+  <meta name="theme-color" content="#f6f8fc">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Model Predictive Shape Controller Guided by a JEPA World Action Model">
+  <meta property="og:description" content="Real-robot experiments and results on deformable object shape control.">
+  <meta property="og:image" content="assets/img/cable-hero.webp">
+  <link rel="icon" type="image/png" href="assets/img/project-icon.png">
+  <link rel="preload" href="assets/fonts/instrumentserif.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="site.js" defer></script>
+  <title>Model Predictive Shape Controller Guided by a JEPA World Action Model</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#main">
+        <img src="assets/img/project-icon.png" width="32" height="32" alt="">
+        <span>Predictive Shape Control</span>
+      </a>
+      <nav class="site-nav" aria-label="Project sections">
+        <a href="#experiments">Experiments</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+      </nav>
+      <a class="button button-header" href="assets/docs/paper.pdf" target="_blank" rel="noopener">Paper PDF</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="paper-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <h1 id="paper-title">Model Predictive Shape Controller <em>Guided by a JEPA World Action Model</em></h1>
+          <p>Two robot arms use point-cloud predictions to shape a sponge and to grasp and shape a cable.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#experiments">Explore experiments</a>
+            <a class="button button-quiet" href="assets/docs/paper.pdf" target="_blank" rel="noopener">Read the paper</a>
+          </div>
+        </div>
+        <figure class="hero-figure">
+          <div class="hero-media">
+            <img src="assets/img/cable-hero.webp"
+                 srcset="assets/img/cable-hero-small.webp 720w, assets/img/cable-hero.webp 1440w"
+                 sizes="(max-width: 880px) 92vw, 50vw" width="1440" height="1080" fetchpriority="high"
+                 alt="Two robot grippers bend a cable toward the red target outline.">
+            <a class="hero-play" href="assets/video/experiment-overview.mp4" data-overview>
+              <span class="play-icon" aria-hidden="true"></span>
+              <span>Play overview</span>
+              <span class="duration">1:17</span>
+            </a>
+          </div>
+          <figcaption>Red points mark cable target 1.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section experiments" id="experiments" aria-labelledby="experiments-title">
+      <div class="shell">
+        <div class="section-heading">
+          <h2 id="experiments-title">Real-robot experiments</h2>
+        </div>
+        <div class="comparison">
+          <div class="comparison-settings">
+            <div class="scene-buttons" role="group" aria-label="Experiment">
+              <button type="button" data-scene="visible" aria-pressed="true">Visible sponge</button>
+              <button type="button" data-scene="occluded" aria-pressed="false">Occluded sponge</button>
+              <button type="button" data-scene="cable" aria-pressed="false">Cable</button>
+            </div>
+            <div class="comparison-options">
+              <div class="baseline-control">
+                <label for="baseline-picker">Compare with</label>
+                <select id="baseline-picker">
+                  <option value="occ-robust">Occ-robust</option>
+                  <option value="no-env">JEPA w/o env</option>
+                  <option value="action-head">Action head</option>
+                  <option value="time-series">Time-series</option>
+                  <option value="gnn">GNN-based</option>
+                </select>
+              </div>
+              <button class="button button-outline" id="play-both" type="button">
+                <span class="play-icon" aria-hidden="true"></span><span id="play-both-label">Play both</span>
+              </button>
+            </div>
+          </div>
+          <div class="comparison-detail">
+            <p id="scene-description">Pre-grasped sponge in full view.</p>
+            <div class="target-buttons" id="target-picker" role="group" aria-label="Cable target" hidden>
+              <button type="button" data-target="1" aria-pressed="true">Target 1</button>
+              <button type="button" data-target="2" aria-pressed="false">Target 2</button>
+              <button type="button" data-target="3" aria-pressed="false">Target 3</button>
+            </div>
+          </div>
+          <div class="video-grid">
+            <figure class="trial">
+              <figcaption><span class="method-name">DOM-JEPA</span><span class="trial-role">Proposed controller</span></figcaption>
+              <div class="trial-player">
+                <video id="proposed-video" aria-label="DOM-JEPA trial on the visible sponge" controls playsinline preload="metadata"
+                       src="assets/video/sponge-visible-dom-jepa.mp4" poster="assets/img/sponge-visible-dom-jepa.webp" width="768" height="576">
+                  <a href="assets/video/sponge-visible-dom-jepa.mp4">Download the DOM-JEPA trial</a>
+                </video>
+                <button class="button trial-start" type="button" aria-controls="proposed-video" hidden>
+                  <span class="play-icon" aria-hidden="true"></span>Play trial
+                </button>
+              </div>
+            </figure>
+            <figure class="trial">
+              <figcaption><span class="method-name" id="baseline-name">Occ-robust</span><span class="trial-role">Baseline</span></figcaption>
+              <div class="trial-player">
+                <video id="baseline-video" aria-label="Occ-robust trial on the visible sponge" controls playsinline preload="metadata"
+                       src="assets/video/sponge-visible-occ-robust.mp4" poster="assets/img/sponge-visible-occ-robust.webp" width="768" height="576">
+                  <a href="assets/video/sponge-visible-occ-robust.mp4">Download the Occ-robust trial</a>
+                </video>
+                <button class="button trial-start" type="button" aria-controls="baseline-video" hidden>
+                  <span class="play-icon" aria-hidden="true"></span>Play trial
+                </button>
+              </div>
+            </figure>
+          </div>
+          <p class="trial-note" id="trial-note">Example trials at 8× speed.</p>
+          <p class="video-status" id="video-status" role="status" hidden></p>
+          <noscript><p class="video-status">JavaScript enables trial selection and joint playback. The two visible-sponge videos can be played individually.</p></noscript>
+        </div>
+        <details class="sequence" id="sponge-sequence">
+          <summary>Sponge frames with and without occlusion</summary>
+          <figure>
+            <button type="button" class="figure-open" data-zoom="Sponge frame sequence" aria-label="Enlarge the sponge frame sequence">
+              <img src="assets/img/sponge-sequence.webp" alt="A six-frame visible sponge sequence beside a six-frame occluded sequence, with the white occluder outlined in frames two through four." width="2000" height="398" loading="lazy">
+            </button>
+            <figcaption>Blue outlines mark the occluder. Frames 5 and 6 show shape correction after removal.</figcaption>
+          </figure>
+        </details>
+      </div>
+    </section>
+
+    <section class="section method" id="method" aria-labelledby="method-title">
+      <div class="shell">
+        <div class="section-heading">
+          <h2 id="method-title">How the controller works</h2>
+        </div>
+        <figure class="figure-surface pipeline">
+          <button type="button" class="figure-open" data-zoom="Training pipeline" aria-label="Enlarge the training pipeline">
+            <img src="assets/img/training.webp" width="1800" height="810" alt="Two training stages share the JEPA dynamics predictor. The first trains the object encoder and predictor, and the second trains the predictor with the autoregressive action head." loading="lazy">
+          </button>
+          <figcaption>Recorded actions supervise JEPA rollouts. The predictor and action head then train jointly with frozen encoders.</figcaption>
+        </figure>
+        <div class="method-details">
+          <article>
+            <h3>Encode partial observations</h3>
+            <p>Self-masked training improves object encoding under occlusion. A separate encoder processes the scene.</p>
+          </article>
+          <article>
+            <h3>Predict shape changes</h3>
+            <p>JEPA predicts ten steps in latent space using the scene point cloud and updated robot states.</p>
+          </article>
+          <article>
+            <h3>Sample and replan</h3>
+            <p>The action head seeds MPPI with cable-grasping motions. MPPI scores predicted latents against the goal and replans after each action.</p>
+          </article>
+        </div>
+        <div class="figure-grid">
+          <figure class="figure-surface">
+            <h3>Ten-step shape prediction</h3>
+            <button type="button" class="figure-open" data-zoom="Ten-step shape prediction" aria-label="Enlarge the ten-step prediction figure">
+              <img src="assets/img/predictions.webp" width="1280" height="670" loading="lazy"
+                   alt="Predicted and measured point clouds overlap at steps 1, 5, and 10, for an occluded sponge and a cable.">
+            </button>
+            <figcaption>Predictions (blue) overlaid on measurements (red).</figcaption>
+          </figure>
+          <figure class="figure-surface">
+            <h3>Latent error and shape distance</h3>
+            <button type="button" class="figure-open" data-zoom="Latent error and Chamfer distance" aria-label="Enlarge the latent-error scatter plot">
+              <img src="assets/img/latent-distance.webp" width="1280" height="685" loading="lazy"
+                   alt="Scatter plot of Chamfer distance in centimeters versus latent mean squared error, with Pearson r 0.625 and Spearman rho 0.641.">
+            </button>
+            <figcaption>Latent error correlates with Chamfer distance, supporting a latent-space MPPI cost.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section results" id="results" aria-labelledby="results-title">
+      <div class="shell">
+        <div class="section-heading">
+          <h2 id="results-title">Shape control results</h2>
+          <p>DOM-JEPA has the lowest mean final Chamfer distance in all five settings.</p>
+        </div>
+        <div class="summary-metrics" role="group" aria-label="DOM-JEPA final Chamfer distance">
+          <div><p class="metric-value">0.81 <small>cm</small></p><p class="metric-label">Visible sponge</p></div>
+          <div><p class="metric-value">1.14 <small>cm</small></p><p class="metric-label">Occluded sponge</p></div>
+          <div><p class="metric-value">0.77 <small>cm</small></p><p class="metric-label">Cable (target average)</p></div>
+        </div>
+        <div class="results-table">
+          <h3 id="trial-table-title">Final Chamfer distance over ten trials</h3>
+          <div class="table-scroll" role="region" aria-labelledby="trial-table-title" tabindex="0">
+            <table aria-describedby="table-note">
+              <colgroup></colgroup>
+              <colgroup span="2"></colgroup>
+              <colgroup span="3"></colgroup>
+              <thead>
+                <tr><th scope="col" rowspan="2">Method</th><th scope="colgroup" colspan="2">Pre-grasped sponge</th><th scope="colgroup" colspan="3">Non-pre-grasped cable</th></tr>
+                <tr><th scope="col">Visible</th><th scope="col">Occluded</th><th scope="col">Target 1</th><th scope="col">Target 2</th><th scope="col">Target 3</th></tr>
+              </thead>
+              <tbody>
+                <tr class="proposed-row"><th scope="row">DOM-JEPA</th><td>0.81 ± 0.11</td><td>1.14 ± 0.08</td><td>0.94 ± 0.07</td><td>0.64 ± 0.05</td><td>0.73 ± 0.08</td></tr>
+                <tr><th scope="row">JEPA w/o env</th><td>1.40 ± 0.18</td><td>1.82 ± 0.13</td><td>1.89 ± 0.14</td><td>1.16 ± 0.12</td><td>0.97 ± 0.17</td></tr>
+                <tr><th scope="row">Time-series</th><td>1.14 ± 0.11</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td></tr>
+                <tr><th scope="row">GNN-based</th><td>1.20 ± 0.13</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td></tr>
+                <tr><th scope="row">Occ-robust</th><td>1.07 ± 0.10</td><td>1.99 ± 0.55</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td><td class="unsuccessful">×</td></tr>
+                <tr><th scope="row">Action head</th><td>1.15 ± 0.14</td><td>1.47 ± 0.15</td><td>1.55 ± 0.16</td><td>0.72 ± 0.07</td><td>1.00 ± 0.21</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p id="table-note">Mean ± standard deviation (cm). × marks an unsuccessful trial.</p>
+        </div>
+        <div class="figure-grid control-curves">
+          <figure class="figure-surface">
+            <h3>Sponge control</h3>
+            <button type="button" class="figure-open" data-zoom="Sponge control and prediction errors" aria-label="Enlarge the sponge control curves">
+              <img src="assets/img/sponge-curves.webp" width="1280" height="812" loading="lazy"
+                   alt="Sponge control Chamfer distance and latent prediction error over 60 steps, with and without occlusion.">
+            </button>
+            <figcaption>DOM-JEPA recovers accuracy after the occluder is removed.</figcaption>
+          </figure>
+          <figure class="figure-surface">
+            <h3>Cable control</h3>
+            <button type="button" class="figure-open" data-zoom="Cable control and prediction errors" aria-label="Enlarge the cable control curves">
+              <img src="assets/img/cable-curves.webp" width="1280" height="830" loading="lazy"
+                   alt="Control error and prediction error for the proposed controller and two baselines across three cable target shapes.">
+            </button>
+            <figcaption>Error falls once the grippers establish contact.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p class="footer-name">Predictive Shape Control</p>
+      <div class="footer-links">
+        <a href="assets/docs/paper.pdf" target="_blank" rel="noopener">Paper PDF</a>
+        <a href="assets/video/experiment-overview.mp4" data-overview>Experiment video</a>
+        <a href="#main">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="media-dialog" id="media-dialog" aria-labelledby="media-dialog-title">
+    <div class="dialog-inner">
+      <header class="dialog-header">
+        <h2 id="media-dialog-title">Experiment overview</h2>
+        <form method="dialog"><button class="button button-outline" type="submit">Close</button></form>
+      </header>
+      <div id="dialog-content"></div>
+    </div>
+  </dialog>
+</body>
+</html>
